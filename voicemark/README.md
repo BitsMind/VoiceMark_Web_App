@@ -2,6 +2,8 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+!!!! Remember to cd into the 'voicemark' folder first !!!!
+
 First, run the development server:
 
 ```bash
