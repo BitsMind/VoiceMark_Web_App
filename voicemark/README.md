@@ -4,7 +4,9 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 !!!! Remember to cd into the 'voicemark' folder first !!!!
 
-First, run the development server:
+First, run 'npm i' in the CLI to install all dependencies.
+
+Then, run the development server:
 
 ```bash
 npm run dev
