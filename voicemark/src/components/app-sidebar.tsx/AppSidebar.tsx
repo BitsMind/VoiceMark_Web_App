@@ -15,12 +15,12 @@ import {
 const items = [
   {
     title: "Home",
-    url: "#",
+    url: "main",
     icon: Home,
   },
   {
     title: "Inbox",
-    url: "#",
+    url: "landing",
     icon: Inbox,
   },
   {
@@ -42,7 +42,7 @@ const items = [
 
 export function AppSidebar() {
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar className="opacity-75" collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>VoiceMark</SidebarGroupLabel>
@@ -50,10 +50,10 @@ export function AppSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild className="group [&>svg]:w-6 [&>svg]:h-6">
                     <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
+                      <item.icon/>
+                      <span className="text-sm">{item.title}</span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

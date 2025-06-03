@@ -59,9 +59,9 @@ export function NavMenu() {
       <div className="ml-4">
         <Logo />
       </div>
-      <div className="ml-auto mr-4">
+      <div className="ml-auto mr-4 ">
         <NavigationMenu viewport={false}>
-          <NavigationMenuList>
+          <NavigationMenuList className="opacity-75">
             <NavigationMenuItem>
               <NavigationMenuTrigger>Home</NavigationMenuTrigger>
               <NavigationMenuContent>

@@ -5,6 +5,7 @@ import "./globals.css";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar.tsx/AppSidebar";
 import DynamicBreadcrumb from "@/components/breadcrumb/breadcrumb";
+import { Toaster } from "@/components/ui/sonner";
 
 import React, { PropsWithChildren } from "react";
 import { cn } from "@/lib/utils";
@@ -27,16 +28,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-b from-[#2c3e50] to-[#fd746c]`}
       >
         <div className="flex h-full w-full">
           <SidebarProvider>
             <AppSidebar />
             <main className=" w-full">
               <NavMenu />
-              <div className="flex "> TODO: FIX THE ALIGNMENT OF THE ICON
+              <div className="flex items-center "> 
                 <SidebarTrigger />
                 <DynamicBreadcrumb />
               </div>
@@ -44,8 +45,7 @@ export default function RootLayout({
               {children}
             </main>
           </SidebarProvider>
-
-          {/* <Toaster position="top-center" /> */}
+          <Toaster position="top-center" />
         </div>
       </body>
     </html>

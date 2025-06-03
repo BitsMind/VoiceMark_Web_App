@@ -7,10 +7,10 @@ export default async function Page() {
       <div className="text-white mb-10">
         <h1 className="text-3xl font-semibold flex items-center gap-4">
           <Home className="w-8 h-8" />
-          Landing Page
+          Main Page
         </h1>
         <p className="text-sm text-gray-300">
-          Landing page here
+          Main page here
         </p>
       </div>
     </div>
