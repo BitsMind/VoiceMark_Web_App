@@ -13,9 +13,9 @@ import {
 
 import { Logo } from "../logo/Logo";
 
-export function NavMenu() {
+export function LandingNavMenu() {
   return (
-    <div className="flex w-full items-center">
+    <div className="flex w-full items-center fixed border py-3 bg-gray-600 z-100">
       <div className="ml-4">
         <Logo />
       </div>

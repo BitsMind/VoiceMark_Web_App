@@ -1,16 +1,9 @@
-"use client";
-
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar.tsx/AppSidebar";
-import DynamicBreadcrumb from "@/components/breadcrumb/breadcrumb";
 import { Toaster } from "@/components/ui/sonner";
 
 import React, { PropsWithChildren } from "react";
-import { cn } from "@/lib/utils";
-import { NavMenu } from "@/components/navigation-menu/NavigationMenu";
-// import { Toaster } from "sonner";
+import { Metadata } from "next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,6 +15,11 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const metadata: Metadata = {
+  title: "VoiceMark",
+  description: "Audio-watermarkinng made easy",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,23 +28,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
+        suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-b from-[#2c3e50] to-[#fd746c]`}
       >
-        <div className="flex h-full w-full">
-          <SidebarProvider>
-            <AppSidebar />
-            <main className=" w-full">
-              <NavMenu />
-              <div className="flex items-center "> 
-                <SidebarTrigger />
-                <DynamicBreadcrumb />
-              </div>
-
-              {children}
-            </main>
-          </SidebarProvider>
-          <Toaster position="top-center" />
-        </div>
+        <main className=" w-full">{children}</main>
+        <Toaster position="top-center" />
       </body>
     </html>
   );
