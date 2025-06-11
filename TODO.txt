@@ -1,9 +1,11 @@
 Tasks:
-- Customizable Avatar
 - Componentize the landing page components (already did How It Work)
 - Configures links
 - Add more to landing page nav menu
+- Re-design login/signup page
+- Re-design top bar of home page(move stuffs to left, configures the links)
 
 
 Ideas:
 - Potentially add our research paper to the website and add a section to the landing page
+- Customizable Avatar
