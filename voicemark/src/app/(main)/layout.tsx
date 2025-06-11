@@ -5,15 +5,18 @@ import DynamicBreadcrumb from "@/components/breadcrumb/breadcrumb";
 import React from "react";
 import { NavMenu } from "@/components/navigation-menu/NavigationMenu";
 import { UserDropdown } from "@/components/user-dropdown-menu/UserDropdownMenu";
+import { cookies } from "next/headers";
 
-export default function Layout({
+export default async function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
   return (
     <div className="flex h-full w-full">
-      <SidebarProvider>
+      <SidebarProvider defaultOpen={defaultOpen}>
         <AppSidebar />
         <main className=" w-full">
           <div className="flex flex-row items-center">

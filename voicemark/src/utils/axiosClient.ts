@@ -1,37 +1,54 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
 
-const backendUrl = "http://localhost:5001";  //CHANGE THIS 
+const backendUrl = "http://localhost:5002";
 
 const isServer = typeof window === "undefined";
 
+// Create an instance of axios
 const API = axios.create({
   baseURL: backendUrl,
-  withCredentials: true, 
 });
 
-API.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    if (!config.baseURL) {
-      config.baseURL = backendUrl;
-    }
+// class ClientSessionToken {
+//   private token: string = "";
+//   set value(token: string) {
+//     if (isServer) {
+//       throw new Error("Cannot set token");
+//     }
+//     this.token = token;
+//   }
 
-    return config;
-  },
-  (error) => {
-    console.error("Request error:", error);
-    return Promise.reject(error);
-  }
-);
+//   get value() {
+//     return this.token;
+//   }
+// }
 
-API.interceptors.response.use(
-  (response) => {
-    return response; 
-  },
-  (error) => {
-    console.error("Response error:", error);
-    return Promise.reject(error); 
-  }
-);
+// export const clientSessionToken = new ClientSessionToken();
+// // Request interceptor
+// API.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
+//   try {
+//     if (!isServer) {
+//       if (clientSessionToken.value) {
+//         config.headers.Authorization = `Bearer ${clientSessionToken.value}`;
+//       } else {
+//         config.headers.Authorization = ``;
+//       }
+//     }
+
+//     const baseUrl = config.baseURL;
+
+//     if (!baseUrl) {
+//       config.baseURL = "https://localhost:3000";
+//     }
+
+//     return config;
+//   } catch (error) {
+//     if (!isServer) {
+//       console.error("Request interceptor error:", error);
+//     }
+//     return Promise.reject(error);
+//   }
+// });
 
 
 export default API;

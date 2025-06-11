@@ -1,7 +1,5 @@
+"use client";
 import * as React from "react";
-import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
 
 import {
   DropdownMenu,
@@ -13,17 +11,27 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
+import { useUserStore } from "@/stores/user-store";
+import { Menu, User } from "lucide-react";
 
 export function UserDropdown() {
+  const { currentUser } = useUserStore();
+
+  const userDisplayName = () => {
+    if (!currentUser) return "";
+    return currentUser.name;
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        {/* User avatar, make it customizable later */}
-        <Avatar className="mr-3">
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
+        <div className="flex items-center mr-3">
+          <User size={20}/>
+          <p className="text-semibold text-primary text-sm truncate max-w-full overflow-hidden text-ellipsis mx-2">
+            {userDisplayName()}
+          </p>
+          <Menu size={25}/>
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 mr-4" align="start">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>

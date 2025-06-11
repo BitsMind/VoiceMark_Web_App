@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/sonner";
 
 import React, { PropsWithChildren } from "react";
 import { Metadata } from "next";
+import SessionWrapper from "@/components/wrapper/SessionWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +32,9 @@ export default function RootLayout({
         suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-b from-[#2c3e50] to-[#fd746c]`}
       >
-        <main className=" w-full">{children}</main>
+        <SessionWrapper>
+          <main className="w-full">{children}</main>
+        </SessionWrapper>
         <Toaster position="top-center" />
       </body>
     </html>
