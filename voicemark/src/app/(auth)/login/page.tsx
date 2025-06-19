@@ -62,7 +62,6 @@ export default function Page() {
 
   return (
     <div className="flex screen">
-      {/* Left side of the screen, full width on small and medium screen */}
       <div className="flex-[9] flex flex-col justify-center items-center w-full lg:w-auto">
         <h1 className="font-bold text-4xl text-blue-800 whitespace-nowrap py-10">
           Sign In

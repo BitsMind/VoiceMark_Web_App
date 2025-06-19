@@ -56,6 +56,26 @@ export async function login(values: {
   }
 }
 
+
+export async function userSignup(values: {
+  name: string;
+  email: string;
+  password: string;
+}) {
+  try {
+    const response: AxiosResponse<AuthResponse> = await API.post(
+      "/api/auth/signup",
+      values,
+    );
+
+    return response;
+
+  } catch (error) {
+    console.error("Signup failed:", error);
+    throw error;
+  }
+}
+
 export async function getMe(): Promise<User> {
   try {
     const response: AxiosResponse<AuthResponse> = await API.get(

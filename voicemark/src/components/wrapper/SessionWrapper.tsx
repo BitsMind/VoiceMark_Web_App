@@ -1,30 +1,45 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { useUserStore } from "@/stores/user-store";
 import { getMe } from "@/actions/auth";
-import { usePathname } from "next/navigation";
 
-export default function SessionWrapper({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const { setCurrentUser, currentUser } = useUserStore();
+const SKIPPED_ROUTES = ["/landing", "/login", "/signup"];
+
+export default function SessionWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { currentUser, setCurrentUser } = useUserStore();
+  const [checked, setChecked] = useState(false);
+
+  const shouldSkip = SKIPPED_ROUTES.includes(pathname);
 
   useEffect(() => {
-    if (pathname.includes("/login")) {
+    if (shouldSkip) {
+      setChecked(true); 
       return;
     }
 
-    (async () => {
-      if (!currentUser) {
-        const res = await getMe();
-        setCurrentUser(res);
+    const init = async () => {
+      try {
+        if (!currentUser) {
+          const user = await getMe();
+          setCurrentUser(user);
+        }
+      } catch {
+        router.replace("/login");
+      } finally {
+        setChecked(true);
       }
-    })();
-  }, []);
+    };
+
+    init();
+  }, [pathname]);
+
+  if (!checked) {
+    return <div className="min-h-screen bg-white" />;
+  }
 
   return <>{children}</>;
 }

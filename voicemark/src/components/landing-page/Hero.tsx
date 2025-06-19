@@ -22,7 +22,7 @@ export default function Hero() {
             Explore Features
           </a>
           <a
-            href="#contact"
+            href="/login"
             className="px-8 py-3 bg-transparent border border-white text-white rounded-lg shadow-lg hover:bg-white/10 transition-transform transform hover:scale-105"
           >
             Try VoiceMark
