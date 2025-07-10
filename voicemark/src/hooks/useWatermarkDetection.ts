@@ -1,9 +1,8 @@
-// hooks/useWatermarkDetection.ts
 "use client";
 
 import { useState } from "react";
 import { toast } from "sonner";
-import { detectWatermark } from "@/api/fileManage"; // define this API function
+import { detectWatermark } from "@/api/fileManage"; 
 
 export interface WatermarkDetectionResult {
   hasWatermark: boolean;

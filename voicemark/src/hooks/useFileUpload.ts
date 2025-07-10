@@ -1,6 +1,4 @@
-// hooks/useFileUpload.ts
 "use client";
-
 import { useState } from "react";
 import { uploadAudioFile } from "@/api/fileManage";
 import { toast } from "sonner";

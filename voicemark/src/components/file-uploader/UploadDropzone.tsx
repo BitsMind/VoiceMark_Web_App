@@ -1,4 +1,3 @@
-// components/file-uploader/FileUploadDropzone.tsx
 "use client";
 
 import { useDropzone } from "react-dropzone";

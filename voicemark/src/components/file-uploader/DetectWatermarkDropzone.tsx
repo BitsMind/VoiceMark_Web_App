@@ -1,4 +1,3 @@
-// components/file-uploader/DetectWatermarkDropzone.tsx
 "use client";
 
 import { useDropzone } from "react-dropzone";
