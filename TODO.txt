@@ -5,6 +5,8 @@ Tasks:
 - Re-design login/signup page
 - Re-design top bar of home page(move stuffs to left, configures the links)
 - Check responsiveness
+- Componentize and refactor upload zone and user uploaded file table
+- Add created date to the table
 
 Ideas:
 - Potentially add our research paper to the website and add a section to the landing page

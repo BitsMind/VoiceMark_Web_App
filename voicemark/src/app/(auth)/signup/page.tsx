@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { PasswordVisibility } from "@/utils/passwordVisibility";
 import { SignUp, SignUpSchema } from "@/schema";
-import { userSignup } from "@/actions/auth";
+import { userSignup } from "@/api/auth";
 import { toast } from "sonner";
 import { useUserStore } from "@/stores/user-store";
 import { useRouter } from "next/navigation";

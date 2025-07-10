@@ -19,7 +19,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { SignIn, signInSchema } from "@/schema";
 import { useRouter } from "next/navigation";
-import { login } from "@/actions/auth";
+import { login } from "@/api/auth";
 import { toast } from "sonner";
 import { useUserStore } from "@/stores/user-store";
 

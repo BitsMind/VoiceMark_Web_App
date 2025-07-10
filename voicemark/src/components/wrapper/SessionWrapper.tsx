@@ -3,11 +3,15 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useUserStore } from "@/stores/user-store";
-import { getMe } from "@/actions/auth";
+import { getMe } from "@/api/auth";
 
 const SKIPPED_ROUTES = ["/landing", "/login", "/signup"];
 
-export default function SessionWrapper({ children }: { children: React.ReactNode }) {
+export default function SessionWrapper({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const pathname = usePathname();
   const router = useRouter();
   const { currentUser, setCurrentUser } = useUserStore();
@@ -17,7 +21,7 @@ export default function SessionWrapper({ children }: { children: React.ReactNode
 
   useEffect(() => {
     if (shouldSkip) {
-      setChecked(true); 
+      setChecked(true);
       return;
     }
 

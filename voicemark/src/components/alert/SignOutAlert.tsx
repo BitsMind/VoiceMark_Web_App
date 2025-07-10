@@ -12,7 +12,7 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
-import { signOut } from "@/actions/auth";
+import { signOut } from "@/api/auth";
 import { useUserStore } from "@/stores/user-store";
 import { useRouter } from "next/navigation";
 
@@ -34,8 +34,8 @@ export function useSignOutDialog() {
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={async () => {
-              await signOut();      
-              logout();             
+              await signOut();
+              logout();
               router.push("/login");
               setOpen(false);
             }}
