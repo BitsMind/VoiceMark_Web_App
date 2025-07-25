@@ -12,12 +12,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useUserStore } from "@/stores/user-store";
-import { Menu, User } from "lucide-react";
+import { Menu, Settings, User } from "lucide-react";
 import { useSignOutDialog } from "../alert/SignOutAlert";
+import { useRouter } from "next/navigation";
 
 export function UserDropdown() {
   const { currentUser } = useUserStore();
   const { show, Dialog } = useSignOutDialog();
+  const router = useRouter();
 
   const userDisplayName = () => {
     if (!currentUser) return "";
@@ -37,14 +39,13 @@ export function UserDropdown() {
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56 mr-4" align="start">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuGroup>
-            <DropdownMenuItem>
-              Profile
+            <DropdownMenuItem onClick={() => router.push("/profile")}>
+              <User /> Account
               <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              Settings
+              <Settings/> Settings
               <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
             </DropdownMenuItem>
           </DropdownMenuGroup>

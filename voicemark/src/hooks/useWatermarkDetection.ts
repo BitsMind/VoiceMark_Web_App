@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
-import { detectWatermark } from "@/api/fileManage"; 
+import { detectWatermark } from "@/api/fileManage";
 
 export interface WatermarkDetectionResult {
   hasWatermark: boolean;
@@ -60,9 +60,10 @@ export function useWatermarkDetection() {
         timestamp: res.message.createdAt,
       });
       toast.success("Detection complete.");
-    } catch (err) {
-      toast.error("Failed to detect watermark.");
-      console.error(err);
+    } catch (err: any) {
+      const errorMessage =
+        err?.response?.data?.error || "Unknown error";
+      toast.error(`Failed to detect watermark: ${errorMessage}`);
     } finally {
       setUploading(false);
     }

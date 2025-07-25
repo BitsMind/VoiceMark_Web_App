@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Play, Pause } from "lucide-react";
+import { Play, Pause, Download } from "lucide-react";
 import API from "@/utils/axiosClient";
 import { toast } from "sonner";
 
@@ -148,20 +148,7 @@ export default function UserUploadedFiles({
                         onClick={() => handleDownload(file.id)}
                         className="flex gap-1 items-center"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-4 w-4"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 12v6m0 0l3-3m-3 3l-3-3m0-6a4 4 0 118 0"
-                          />
-                        </svg>
+                       <Download/>
                         Download
                       </Button>
                     </div>

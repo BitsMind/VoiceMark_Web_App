@@ -1,6 +1,7 @@
 import API from "@/utils/axiosClient";
 import { UserType, User } from "@/types/role";
 import { AxiosResponse } from "axios";
+import { toast } from "sonner";
 
 interface AuthResponse {
   user: {
@@ -86,7 +87,7 @@ export async function getMe(): Promise<User> {
     );
     return extractUserInfo(response.data);
   } catch (error) {
-    console.error("Failed to get user info", error);
+    toast.error("Failed to get user info, please log in again")
     throw error;
   }
 }

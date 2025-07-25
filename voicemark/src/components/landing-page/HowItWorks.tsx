@@ -1,5 +1,5 @@
 import { Fingerprint, Globe, CheckCheck } from "lucide-react";
-import { HowItWorksCard } from "../card/HowItWorksCard";
+import { HowItWorksCard } from "../help-card/HowItWorksCard";
 
 const steps = [
   {

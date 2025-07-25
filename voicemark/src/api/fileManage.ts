@@ -44,7 +44,6 @@ export async function detectWatermark(payload: { audioFile: DetectPayload }) {
 
     return response.data;
   } catch (error) {
-    console.error("Detection failed:", error);
     throw error;
   }
 }
