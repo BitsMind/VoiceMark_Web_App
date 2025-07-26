@@ -4,8 +4,8 @@ export interface UploadPayload {
   fileName: string;
   fileSize: number;
   format: string;
-  fileBase64: string;
   watermarkMessage?: string;
+  fileBase64: string;
 }
 
 export interface DetectPayload {
@@ -48,3 +48,13 @@ export async function detectWatermark(payload: { audioFile: DetectPayload }) {
   }
 }
 
+export async function deleteFile(id: string) {
+  try {
+    const response = await API.delete(`/api/audio/delete/${id}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}

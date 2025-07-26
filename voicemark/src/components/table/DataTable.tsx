@@ -26,8 +26,10 @@ import {
   ArrowDownUp,
   ArrowDownWideNarrow,
   ArrowUpNarrowWide,
+  HelpCircle,
 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { AudioTrack } from "../account/AudioPlayer";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -35,12 +37,13 @@ interface DataTableProps<TData, TValue> {
   onEdit: (data: TData) => void;
   onDelete: (id: string) => void;
   onmultiDelete: (data: TData[]) => void;
+  setCurrentTrack?: (track: AudioTrack) => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-
+  setCurrentTrack,
   onEdit,
   onDelete,
   onmultiDelete,
@@ -67,6 +70,7 @@ export function DataTable<TData, TValue>({
     meta: {
       onEdit,
       onDelete,
+      setCurrentTrack,
     },
   });
 
@@ -78,7 +82,8 @@ export function DataTable<TData, TValue>({
   };
 
   return (
-    <div className="space-y-4 bg-black mb-5 rounded-lg border h-[670px]">
+    <div className="relative flex flex-col space-y-4 bg-black mb-5 rounded-lg border h-[670px]">
+      <HelpCircle className="absolute top-3 right-3 h-4 w-4 text-muted-foreground" />
       <div className="flex items-center justify-between">
         <div className="mt-2 ml-2">
           <Input
@@ -153,6 +158,24 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  onClick={() => {
+                    const record = row.original as {
+                      fileName: string;
+                      filePath: string;
+                    };
+                    const { setCurrentTrack } = table.options.meta as {
+                      setCurrentTrack?: (track: {
+                        fileName: string;
+                        filePath: string;
+                      }) => void;
+                    };
+
+                    setCurrentTrack?.({
+                      fileName: record.fileName,
+                      filePath: record.filePath,
+                    });
+                  }}
+                  className="cursor-pointer hover:bg-zinc-900 transition"
                 >
                   <TableCell className="w-[50px]">
                     <Checkbox
@@ -162,7 +185,10 @@ export function DataTable<TData, TValue>({
                     />
                   </TableCell>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      className="truncate max-w-[20px] overflow-hidden text-ellipsis"
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -185,7 +211,7 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
-      <div className="flex items-center justify-end space-x-2 py-4 px-5">
+      <div className="flex items-center justify-end space-x-2 py-4 px-5 mt-auto">
         <Button
           variant="outline"
           size="sm"

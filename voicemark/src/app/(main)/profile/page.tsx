@@ -19,45 +19,51 @@ import {
 } from "@radix-ui/react-dialog";
 import { DialogHeader } from "@/components/ui/dialog";
 import { MyForm } from "@/components/table/Form";
+import { AudioTrack, MiniAudioPlayer } from "@/components/account/AudioPlayer";
+import { deleteFile } from "@/api/fileManage";
 
 export default function Page() {
   const [files, setFiles] = useState<MyFormData[]>([]);
-  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
+  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(
+    null
+  );
   const [playingId, setPlayingId] = useState<string | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [editingUser, setEditingUser] = useState<MyFormData | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [currentTrack, setCurrentTrack] = useState<AudioTrack | null>(null);
 
-  const fetchFiles = async () => {
-    try {
-      const res = await API.get("/api/audio/my-files", { withCredentials: true });
-      setFiles(res.data.audioFiles);
-    } catch (err) {
-      console.error("Failed to fetch uploaded files", err);
-    }
-  };
+  // const fetchFiles = async () => {
+  //   try {
+  //     const res = await API.get("/api/audio/my-files", { withCredentials: true });
+  //     setFiles(res.data.audioFiles);
+  //   } catch (err) {
+  //     console.error("Failed to fetch uploaded files", err);
+  //   }
+  // };
 
   useEffect(() => {
-    fetchFiles();
+    // fetchFiles();
     (async () => {
       const data = await fetchUserProfile();
       setProfile(data);
+      setFiles(data.audioFiles);
     })();
   }, []);
 
-  const togglePlay = (file: MyFormData) => {
-    if (playingId === file.filePath) {
-      currentAudio?.pause();
-      setPlayingId(null);
-      return;
-    }
-    currentAudio?.pause();
-    const audio = new Audio(file.filePath);
-    audio.play();
-    setCurrentAudio(audio);
-    setPlayingId(file.filePath);
-    audio.onended = () => setPlayingId(null);
-  };
+  // const togglePlay = (file: MyFormData) => {
+  //   if (playingId === file.filePath) {
+  //     currentAudio?.pause();
+  //     setPlayingId(null);
+  //     return;
+  //   }
+  //   currentAudio?.pause();
+  //   const audio = new Audio(file.filePath);
+  //   audio.play();
+  //   setCurrentAudio(audio);
+  //   setPlayingId(file.filePath);
+  //   audio.onended = () => setPlayingId(null);
+  // };
 
   const handleDownload = async (fileId: string) => {
     try {
@@ -86,14 +92,21 @@ export default function Page() {
 
   const handleUpdate = (updatedUser: MyFormData) => {
     setFiles(
-      files.map((record) => (record.id === updatedUser.id ? updatedUser : record))
+      files.map((record) =>
+        record.id === updatedUser.id ? updatedUser : record
+      )
     );
     setIsDialogOpen(false);
     setEditingUser(null);
   };
 
-  const handleDelete = (id: string) => {
-    setFiles(files.filter((record) => record.id !== id));
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteFile(id);
+      setFiles((prev) => prev.filter((record) => record.id !== id));
+    } catch (err) {
+      console.error("Failed to delete file:", err);
+    }
   };
 
   const handlemultiDelete = (users: MyFormData[]) => {
@@ -102,9 +115,13 @@ export default function Page() {
   };
 
   if (!profile)
-    return <div className="h-screen flex items-center justify-center">Loading...</div>;
+    return (
+      <div className="h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
 
-  const columns = createColumns(togglePlay, playingId, handleDownload);
+  const columns = createColumns(handleDownload);
 
   return (
     <div className="min-h-screen w-full px-6">
@@ -117,13 +134,30 @@ export default function Page() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        <div className="lg:col-span-1">
-          <ProfileDetails profile={profile} />
+        <div className="lg:col-span-1 space-y-10 relative">
+          <ProfileDetails profile={profile} onUpdate={setProfile} />
+
+          <div className="hidden lg:block">
+            <MiniAudioPlayer track={currentTrack} />
+          </div>
         </div>
-        <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <UserStatsCard label="Total Uploads" count={profile.totalAudioFiles} bars={[40, 100, 130, 75, 90]} />
-          <UserStatsCard label="Watermarks Detected by Others" count={2} bars={[40, 100, 130, 75, 90]} />
-          <UserStatsCard label="Storage" count={2} bars={[40, 100, 130, 75, 90]} />
+
+        <div className="lg:col-span-3 grid gap-6 grid-cols-[repeat(auto-fit,_minmax(220px,_1fr))] justify-center">
+          <UserStatsCard
+            label="Total Uploads"
+            count={profile.totalAudioFiles}
+            bars={[40, 100, 130, 75, 90]}
+          />
+          <UserStatsCard
+            label="Watermarks Detected by Others"
+            count={2}
+            bars={[40, 100, 130, 75, 90]}
+          />
+          <UserStatsCard
+            label="Storage"
+            count={profile.usedStorage}
+            bars={[40, 100, 130, 75, 90]}
+          />
 
           <div className="col-span-3">
             <h2 className="text-xl font-semibold mb-4 text-white">
@@ -134,7 +168,7 @@ export default function Page() {
                 <DialogHeader>
                   <DialogTitle>Edit</DialogTitle>
                   <DialogDescription>
-                    Please fill out the form below to update the data.
+                    Please fill out the form below to update your profile.
                   </DialogDescription>
                 </DialogHeader>
                 <MyForm onSubmit={handleUpdate} initialData={editingUser} />
@@ -146,7 +180,11 @@ export default function Page() {
               onEdit={handleEdit}
               onDelete={handleDelete}
               onmultiDelete={handlemultiDelete}
+              setCurrentTrack={setCurrentTrack}
             />
+            <div className="block lg:hidden w-80 mx-auto pb-5">
+              <MiniAudioPlayer track={currentTrack} />
+            </div>
           </div>
         </div>
       </div>

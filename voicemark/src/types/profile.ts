@@ -1,7 +1,11 @@
+import { FileDetails } from "./file";
+
 export interface UserProfile {
   name: string;
   email: string;
   totalAudioFiles: number;
-  totalPages: number;
-  currentPage: number;
+  memberSince: string;
+  avatar: string;
+  usedStorage: number;
+  audioFiles: FileDetails[]
 }

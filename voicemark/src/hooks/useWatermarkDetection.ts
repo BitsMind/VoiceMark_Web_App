@@ -55,8 +55,8 @@ export function useWatermarkDetection() {
       setResult({
         hasWatermark: res.detected,
         score: res.confidence,
-        name: res.message.createdBy.name,
-        message: res.message.message,
+        name: res.owner.name,
+        message: res.message.content,
         timestamp: res.message.createdAt,
       });
       toast.success("Detection complete.");

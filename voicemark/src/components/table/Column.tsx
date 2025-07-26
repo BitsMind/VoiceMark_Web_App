@@ -18,8 +18,6 @@ interface ColumnActions {
 }
 
 export const createColumns = (
-  togglePlay: (file: MyFormData) => void,
-  playingId: string | null,
   handleDownload: (id: string) => void
 ): ColumnDef<MyFormData>[] => {
   const columns: ColumnDef<MyFormData>[] = [
@@ -38,31 +36,19 @@ export const createColumns = (
         `${(row.original.fileSize / 1024 / 1024).toFixed(2)} MB`,
     },
     {
-      id: "play/download",
-      header: "Play/Download",
+      id: "download",
+      header: "Download",
       cell: ({ row }) => {
         const file = row.original;
         return (
           <div className="flex gap-2">
             <Button
               size="sm"
-              variant="outline"
-              onClick={() => togglePlay(file)}
-            >
-              {playingId === file.filePath ? (
-                <>
-                  <Pause className="w-4 h-4" /> Pause
-                </>
-              ) : (
-                <>
-                  <Play className="w-4 h-4" /> Play
-                </>
-              )}
-            </Button>
-            <Button
-              size="sm"
               variant="secondary"
-              onClick={() => handleDownload(file.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDownload(file.id);
+              }}
             >
               <Download className="w-4 h-4" /> Download
             </Button>
