@@ -26,7 +26,7 @@ const PasswordVisibility = React.forwardRef<
       <button
         type="button"
         onClick={togglePasswordVisibility}
-        className="absolute inset-y-0 right-0 flex items-center px-2 text-gray-600 border-l-2"
+        className="absolute inset-y-0 right-0 flex items-center px-2 text-red-400 border-l-2"
       >
         {showPassword ? <EyeOffIcon /> : <EyeIcon />}
       </button>

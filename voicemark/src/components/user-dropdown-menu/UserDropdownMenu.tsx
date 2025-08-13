@@ -30,7 +30,7 @@ export function UserDropdown() {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <div className="flex items-center mr-3">
+          <div className="flex items-center mr-4 mt-4">
             <User size={20} />
             <p className="text-semibold text-primary text-sm truncate max-w-full overflow-hidden text-ellipsis mx-2">
               {userDisplayName()}

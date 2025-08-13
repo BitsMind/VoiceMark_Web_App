@@ -15,9 +15,9 @@ import { Logo } from "../logo/Logo";
 
 export function NavMenu() {
   return (
-    <div className="flex w-full items-center">
+    <div className="flex w-full items-center mt-4">
       <div className="ml-4">
-        <Logo />
+        <Logo  />
       </div>
       <div className="ml-auto mr-4">
         <NavigationMenu viewport={false}>

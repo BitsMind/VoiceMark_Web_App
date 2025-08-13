@@ -10,6 +10,7 @@ export interface WatermarkDetectionResult {
   name: string | null;
   message: string | null;
   timestamp: string | null;
+  isOwner: boolean;
 }
 
 export function useWatermarkDetection() {
@@ -54,15 +55,17 @@ export function useWatermarkDetection() {
 
       setResult({
         hasWatermark: res.detected,
-        score: res.confidence,
-        name: res.owner.name,
-        message: res.message.content,
-        timestamp: res.message.createdAt,
+        score: res.confidence ?? null,
+        name: res.detected ? res.owner?.name ?? null : null,
+        message: res.detected
+          ? res.message?.content ?? null
+          : res.message ?? null,
+        timestamp: res.detected ? res.message?.createdAt ?? null : null,
+        isOwner: res.detected ? res.isOwner ?? null : null,
       });
       toast.success("Detection complete.");
     } catch (err: any) {
-      const errorMessage =
-        err?.response?.data?.error || "Unknown error";
+      const errorMessage = err?.response?.data?.error || "Unknown error";
       toast.error(`Failed to detect watermark: ${errorMessage}`);
     } finally {
       setUploading(false);

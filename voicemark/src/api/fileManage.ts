@@ -28,7 +28,6 @@ export async function uploadAudioFile(payload: UploadPayload) {
 
     return response.data;
   } catch (error) {
-    console.error("Upload failed:", error);
     throw error;
   }
 }

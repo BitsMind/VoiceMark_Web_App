@@ -38,9 +38,11 @@ export function FileUploadDropzone({
   };
 
   return (
-    <div className="border rounded-lg p-6 w-full h-full space-y-4 bg-background">
+    <div className="border rounded-lg p-6 w-full h-full space-y-2.5 bg-background">
       <div>
-        <h2 className="text-lg font-medium mb-1">Upload Audio(s) to Watermark</h2>
+        <h2 className="text-lg font-medium mb-1">
+          Upload Audio(s) to Watermark
+        </h2>
         <p className="text-sm text-muted-foreground">
           Drag and drop audio files (mp3, wav, flac, mp4, m4a)
         </p>
@@ -71,6 +73,9 @@ export function FileUploadDropzone({
           maxLength={500}
           className="resize-none"
         />
+        <p className="text-xs text-muted-foreground mt-1 text-right">
+          {watermarkMessage.length} / 500 characters
+        </p>
       </div>
 
       {/* Selected files list */}

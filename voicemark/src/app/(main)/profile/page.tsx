@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { SquareUserRound, Play, Pause, Download } from "lucide-react";
+import { SquareUserRound} from "lucide-react";
 import API from "@/utils/axiosClient";
 import { toast } from "sonner";
 import { MyFormData } from "@/types/table";
@@ -114,6 +114,14 @@ export default function Page() {
     setFiles(files.filter((record) => !userIds.has(record.id)));
   };
 
+  function handleCalculateStorage(): number {
+    let converted = 0;
+    if (profile){
+      converted = Number((profile.usedStorage / 1024 / 1024).toFixed(2));
+    }
+    return converted;
+  };
+
   if (!profile)
     return (
       <div className="h-screen flex items-center justify-center">
@@ -154,8 +162,8 @@ export default function Page() {
             bars={[40, 100, 130, 75, 90]}
           />
           <UserStatsCard
-            label="Storage"
-            count={profile.usedStorage}
+            label="/ 500 MB of Available Storage"
+            count={handleCalculateStorage()}
             bars={[40, 100, 130, 75, 90]}
           />
 

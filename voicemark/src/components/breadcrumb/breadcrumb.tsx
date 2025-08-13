@@ -19,7 +19,7 @@ const DynamicBreadcrumb = () => {
     <Breadcrumb>
       <BreadcrumbList className="m-4">
         <BreadcrumbItem>
-          <BreadcrumbLink href="/">
+          <BreadcrumbLink href="/home">
             <Home size={16}  />
           </BreadcrumbLink>
         </BreadcrumbItem>

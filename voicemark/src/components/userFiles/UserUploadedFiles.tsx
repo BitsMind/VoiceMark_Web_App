@@ -34,7 +34,6 @@ export default function UserUploadedFiles({
       });
       setFiles(res.data.audioFiles || []);
     } catch (err) {
-      console.error("Failed to fetch uploaded files", err);
     }
   };
 
@@ -87,7 +86,7 @@ export default function UserUploadedFiles({
 
   if (!files.length) {
     return (
-      <Card className="h-full flex items-center justify-center">
+      <Card className="h-[495px] flex items-center justify-center">
         <CardContent className="p-6 text-center text-muted-foreground text-sm">
           No uploaded audio files found.
         </CardContent>
@@ -99,10 +98,9 @@ export default function UserUploadedFiles({
     <Card className="h-[495px] flex flex-col">
       <CardContent className="p-4 flex flex-col flex-1 min-h-0">
         <h3 className="text-lg font-medium mb-4">
-          Your Watermarked Audio Files
+          Recently Watermarked Files
         </h3>
 
-        {/* Scrollable container */}
         <div className="flex-1 overflow-y-auto min-h-0">
           <table className="w-full text-sm">
             <thead className="sticky top-0 bg-background z-10">

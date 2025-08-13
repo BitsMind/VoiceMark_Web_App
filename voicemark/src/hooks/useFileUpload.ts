@@ -62,9 +62,19 @@ export function useFileUpload() {
 
         const data = await uploadAudioFile(payload);
         setUploadedFiles((prev) => [...prev, data]);
-        toast.success(`Uploaded ${f.name}`);
-      } catch (error) {
-        toast.error(`Failed to upload ${f.name}`);
+        toast.success(`Watermarked ${f.name}!`, {
+          duration: 8000,
+        });
+      } catch (error: any) {
+        const message = error?.response?.data?.error;
+        toast.error(`Failed to upload ${f.name}`, {
+          duration: 15000,
+          cancel: {
+            label: "I understand",
+            onClick: () => [],
+          },
+          description: `${message}`
+        });
       } finally {
         setUploadingFile(null);
       }
