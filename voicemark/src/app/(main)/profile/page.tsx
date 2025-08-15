@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { SquareUserRound} from "lucide-react";
+import { SquareUserRound } from "lucide-react";
 import API from "@/utils/axiosClient";
 import { toast } from "sonner";
 import { MyFormData } from "@/types/table";
@@ -11,59 +11,22 @@ import { ProfileDetails } from "@/components/account/ProfileDetails";
 import { UserStatsCard } from "@/components/account/UserStatsCard";
 import { DataTable } from "@/components/table/DataTable";
 import { createColumns } from "@/components/table/Column";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from "@radix-ui/react-dialog";
-import { DialogHeader } from "@/components/ui/dialog";
-import { MyForm } from "@/components/table/Form";
 import { AudioTrack, MiniAudioPlayer } from "@/components/account/AudioPlayer";
 import { deleteFile } from "@/api/fileManage";
+import { useDeleteDialog } from "@/components/alert/DeleteFileAlert";
 
 export default function Page() {
   const [files, setFiles] = useState<MyFormData[]>([]);
-  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(
-    null
-  );
-  const [playingId, setPlayingId] = useState<string | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [editingUser, setEditingUser] = useState<MyFormData | null>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentTrack, setCurrentTrack] = useState<AudioTrack | null>(null);
 
-  // const fetchFiles = async () => {
-  //   try {
-  //     const res = await API.get("/api/audio/my-files", { withCredentials: true });
-  //     setFiles(res.data.audioFiles);
-  //   } catch (err) {
-  //     console.error("Failed to fetch uploaded files", err);
-  //   }
-  // };
-
   useEffect(() => {
-    // fetchFiles();
     (async () => {
       const data = await fetchUserProfile();
       setProfile(data);
       setFiles(data.audioFiles);
     })();
   }, []);
-
-  // const togglePlay = (file: MyFormData) => {
-  //   if (playingId === file.filePath) {
-  //     currentAudio?.pause();
-  //     setPlayingId(null);
-  //     return;
-  //   }
-  //   currentAudio?.pause();
-  //   const audio = new Audio(file.filePath);
-  //   audio.play();
-  //   setCurrentAudio(audio);
-  //   setPlayingId(file.filePath);
-  //   audio.onended = () => setPlayingId(null);
-  // };
 
   const handleDownload = async (fileId: string) => {
     try {
@@ -84,43 +47,47 @@ export default function Page() {
       toast.error(error.response?.data?.error || "Failed to download file.");
     }
   };
-
-  const handleEdit = (record: MyFormData) => {
-    setEditingUser(record);
-    setIsDialogOpen(true);
-  };
-
-  const handleUpdate = (updatedUser: MyFormData) => {
-    setFiles(
-      files.map((record) =>
-        record.id === updatedUser.id ? updatedUser : record
-      )
-    );
-    setIsDialogOpen(false);
-    setEditingUser(null);
-  };
-
   const handleDelete = async (id: string) => {
+    const toastId = toast.loading("Deleting file...");
     try {
       await deleteFile(id);
       setFiles((prev) => prev.filter((record) => record.id !== id));
+      toast.success("File deleted successfully");
     } catch (err) {
-      console.error("Failed to delete file:", err);
+      toast.error("Failed to delete file");
+    } finally {
+      toast.dismiss(toastId);
     }
   };
 
-  const handlemultiDelete = (users: MyFormData[]) => {
-    const userIds = new Set(users.map((record) => record.id));
-    setFiles(files.filter((record) => !userIds.has(record.id)));
+  const handlemultiDelete = async (records: MyFormData[]) => {
+    const toastId = toast.loading("Deleting selected files...");
+    try {
+      await Promise.all(records.map((record) => deleteFile(record.id)));
+
+      const recordIds = new Set(records.map((record) => record.id));
+      setFiles((prev) => prev.filter((record) => !recordIds.has(record.id)));
+
+      toast.success("Selected files deleted successfully");
+    } catch (err) {
+      toast.error("Failed to delete one or more files");
+    } finally {
+      toast.dismiss(toastId);
+    }
   };
+
+  const { showSingle, showMulti, Dialog } = useDeleteDialog({
+    onConfirmSingle: handleDelete,
+    onConfirmMulti: handlemultiDelete,
+  });
 
   function handleCalculateStorage(): number {
     let converted = 0;
-    if (profile){
+    if (profile) {
       converted = Number((profile.usedStorage / 1024 / 1024).toFixed(2));
     }
     return converted;
-  };
+  }
 
   if (!profile)
     return (
@@ -171,23 +138,11 @@ export default function Page() {
             <h2 className="text-xl font-semibold mb-4 text-white">
               Your Watermarked Audio Files
             </h2>
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Edit</DialogTitle>
-                  <DialogDescription>
-                    Please fill out the form below to update your profile.
-                  </DialogDescription>
-                </DialogHeader>
-                <MyForm onSubmit={handleUpdate} initialData={editingUser} />
-              </DialogContent>
-            </Dialog>
             <DataTable
               columns={columns}
               data={files}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-              onmultiDelete={handlemultiDelete}
+              onDelete={(id) => showSingle(id)}
+              onmultiDelete={(records) => showMulti(records)}
               setCurrentTrack={setCurrentTrack}
             />
             <div className="block lg:hidden w-80 mx-auto pb-5">
@@ -196,6 +151,7 @@ export default function Page() {
           </div>
         </div>
       </div>
+      {Dialog}
     </div>
   );
 }

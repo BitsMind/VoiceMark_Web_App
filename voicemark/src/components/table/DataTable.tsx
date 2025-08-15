@@ -34,7 +34,7 @@ import { AudioTrack } from "../account/AudioPlayer";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  onEdit: (data: TData) => void;
+  // onEdit: (data: TData) => void;
   onDelete: (id: string) => void;
   onmultiDelete: (data: TData[]) => void;
   setCurrentTrack?: (track: AudioTrack) => void;
@@ -44,7 +44,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   setCurrentTrack,
-  onEdit,
+  // onEdit,
   onDelete,
   onmultiDelete,
 }: DataTableProps<TData, TValue>) {
@@ -68,7 +68,7 @@ export function DataTable<TData, TValue>({
       rowSelection,
     },
     meta: {
-      onEdit,
+      // onEdit,
       onDelete,
       setCurrentTrack,
     },
@@ -98,7 +98,7 @@ export function DataTable<TData, TValue>({
           />
         </div>
 
-        <div className="flex items-center gap-4 mt-2 mr-2">
+        <div className="flex items-center gap-4 mt-2 mr-10">
           {Object.keys(rowSelection).length > 0 && (
             <Button onClick={handlemultiDelete} variant="destructive">
               Delete Selected ({Object.keys(rowSelection).length})

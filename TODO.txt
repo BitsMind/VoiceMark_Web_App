@@ -1,6 +1,3 @@
 Tasks:
-- Componentize and refactor the landing page components (already did How It Work)
-- Componentize and refactor user uploaded file table in home page
-- Add date, edit function to the table
-- Add Help, About and Doc ()
-
+- Add Help, About and Doc 
+- Watermark detected by others

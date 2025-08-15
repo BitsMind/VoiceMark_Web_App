@@ -26,6 +26,21 @@ export const createColumns = (
       header: "File Name",
     },
     {
+      accessorKey: "createdAt",
+      header: "Date created",
+      cell: ({ row }) => {
+        const date = new Date(row.original.createdAt);
+        return date.toLocaleString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        });
+      },
+    },
+    {
       accessorKey: "format",
       header: "Format",
     },
@@ -83,7 +98,7 @@ export const createColumns = (
               </DropdownMenuItem>
             )}
             {onDelete && (
-              <DropdownMenuItem onClick={() => onDelete(record.id)}>
+              <DropdownMenuItem className="text-red-700" onClick={() => onDelete(record.id)}>
                 Delete
               </DropdownMenuItem>
             )}

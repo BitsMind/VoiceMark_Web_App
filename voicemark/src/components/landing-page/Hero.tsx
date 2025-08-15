@@ -1,11 +1,18 @@
+import { Logo } from "../logo/Logo";
+
 export default function Hero() {
   return (
     <section
-      className="relative min-h-screen w-full flex items-center justify-center"
+      className="relative min-h-screen w-full flex items-center justify-center bg-contain bg-center"
       id="hero"
+      style={{ backgroundImage: "url('/hero.png')" }}
     >
-      {/* Content */}
+      <div className="absolute inset-0 bg-black/20" />
+
       <div className="relative z-10 text-center px-4 ">
+        <div className="flex justify-center">
+          <Logo/>
+        </div>
         <h1 className="text-5xl md:text-6xl font-extrabold text-white mb-6 leading-tight md:leading-tight drop-shadow-md">
           Audio-watermarking made simple
         </h1>
@@ -13,7 +20,6 @@ export default function Hero() {
           Reimagining audio trust through neural watermarking.
         </p>
 
-        {/* Buttons */}
         <div className="flex flex-col md:flex-row justify-center items-center gap-4">
           <a
             href="#services"

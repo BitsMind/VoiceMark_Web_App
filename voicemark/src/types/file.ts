@@ -23,6 +23,6 @@ export interface FileDetails {
   watermarkMessage: string | null;
   watermarkDetectionCount: number;
   lastDetectedAt: string | null;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 }

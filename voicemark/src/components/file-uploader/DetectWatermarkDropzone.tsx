@@ -32,7 +32,7 @@ export function DetectWatermarkDropzone() {
   });
 
   return (
-    <div className="border rounded-lg p-6 w-full h-full space-y-4 bg-background my-5">
+    <div className="border rounded-lg p-6 w-full h-full space-y-4 bg-background my-5 pb-8">
       <div>
         <h2 className="text-lg font-medium mb-1">Detect Watermark in Audio</h2>
         <p className="text-sm text-muted-foreground">
