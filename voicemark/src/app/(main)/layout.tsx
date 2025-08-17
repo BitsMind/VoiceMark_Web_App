@@ -1,7 +1,4 @@
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar/AppSidebar";
 import DynamicBreadcrumb from "@/components/breadcrumb/breadcrumb";
-
 import React from "react";
 import { NavMenu } from "@/components/navigation-menu/NavigationMenu";
 import { UserDropdown } from "@/components/user-dropdown-menu/UserDropdownMenu";

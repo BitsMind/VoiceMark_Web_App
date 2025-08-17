@@ -33,7 +33,9 @@ export default function UserUploadedFiles({
         withCredentials: true,
       });
       setFiles(res.data.audioFiles || []);
-    } catch (err) {
+    } catch {
+      // Handle error silently or add error handling if needed
+      console.error("Failed to fetch files");
     }
   };
 
@@ -78,9 +80,16 @@ export default function UserUploadedFiles({
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-    } catch (error: any) {
-      console.error("Download failed:", error.response?.data || error.message);
-      toast.error(error.response?.data?.error || "Failed to download file.");
+    } catch (error: unknown) {
+      console.error("Download failed:", error);
+      
+      // Type guard for axios error
+      if (error && typeof error === 'object' && 'response' in error) {
+        const axiosError = error as { response?: { data?: { error?: string } }; message?: string };
+        toast.error(axiosError.response?.data?.error || "Failed to download file.");
+      } else {
+        toast.error("Failed to download file.");
+      }
     }
   };
 
@@ -146,7 +155,7 @@ export default function UserUploadedFiles({
                         onClick={() => handleDownload(file.id)}
                         className="flex gap-1 items-center"
                       >
-                       <Download/>
+                       <Download className="w-4 h-4" />
                         Download
                       </Button>
                     </div>

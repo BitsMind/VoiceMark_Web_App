@@ -27,7 +27,7 @@ export default function Features() {
               <p className="text-zinc-200 text-justify">
                 Our mission is to redefine trust in digital communication by
                 offering accessible, secure, and resilient watermarking tools.
-                Whether you're a creator, educator, or everyday user, VoiceMark
+                Whether you are a creator, educator, or everyday user, VoiceMark
                 empowers you to take control of your audio and preserve
                 ownership, as illegal distribution has never been easier
                 nowadays.

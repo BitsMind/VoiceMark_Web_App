@@ -39,7 +39,7 @@ export default function SessionWrapper({
     };
 
     init();
-  }, [pathname]);
+  }, [currentUser, pathname, router, setCurrentUser, shouldSkip]);
 
   if (!checked) {
     return <div className="min-h-screen bg-white" />;

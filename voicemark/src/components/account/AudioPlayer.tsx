@@ -19,6 +19,7 @@ export function MiniAudioPlayer({ track }: { track: AudioTrack | null }) {
 
   useEffect(() => {
     if (!track) return;
+    
     const audio = new Audio(track.filePath);
     audioRef.current = audio;
 
@@ -30,7 +31,13 @@ export function MiniAudioPlayer({ track }: { track: AudioTrack | null }) {
     audio.addEventListener("timeupdate", onTimeUpdate);
     audio.addEventListener("ended", onEnded);
 
-    if (isPlaying) audio.play();
+    // Handle play promise properly
+    if (isPlaying) {
+      audio.play().catch((error) => {
+        console.error("Failed to play audio:", error);
+        setIsPlaying(false);
+      });
+    }
 
     return () => {
       audio.pause();
@@ -38,11 +45,18 @@ export function MiniAudioPlayer({ track }: { track: AudioTrack | null }) {
       audio.removeEventListener("timeupdate", onTimeUpdate);
       audio.removeEventListener("ended", onEnded);
     };
-  }, [track]);
+  }, [track, isPlaying]); // Added isPlaying to dependencies
 
   useEffect(() => {
     if (audioRef.current) {
-      isPlaying ? audioRef.current.play() : audioRef.current.pause();
+      if (isPlaying) {
+        audioRef.current.play().catch((error) => {
+          console.error("Failed to play audio:", error);
+          setIsPlaying(false);
+        });
+      } else {
+        audioRef.current.pause();
+      }
     }
   }, [isPlaying]);
 
@@ -58,7 +72,10 @@ export function MiniAudioPlayer({ track }: { track: AudioTrack | null }) {
     if (audioRef.current) {
       audioRef.current.currentTime = 0;
       setProgress(0);
-      audioRef.current.play();
+      audioRef.current.play().catch((error) => {
+        console.error("Failed to play audio:", error);
+        setIsPlaying(false);
+      });
       setIsPlaying(true);
     }
   };

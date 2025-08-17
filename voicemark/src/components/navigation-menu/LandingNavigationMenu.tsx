@@ -1,12 +1,11 @@
 import * as React from "react";
 import Link from "next/link";
-
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";

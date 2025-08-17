@@ -64,6 +64,7 @@ export function useWatermarkDetection() {
         isOwner: res.detected ? res.isOwner ?? null : null,
       });
       toast.success("Detection complete.");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       const errorMessage = err?.response?.data?.error || "Unknown error";
       toast.error(`Failed to detect watermark: ${errorMessage}`);

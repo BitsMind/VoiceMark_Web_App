@@ -11,6 +11,7 @@ import { fetchUserProfile } from "@/api/profile";
 export function ProfileDetails({ profile, onUpdate }: { profile: UserProfile, onUpdate: (update: UserProfile)=> void}) {
   const { show, Dialog } = useSignOutDialog();
   const [open, setOpen] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [userData, setUserData] = useState<UserProfile>(profile);
 
 
