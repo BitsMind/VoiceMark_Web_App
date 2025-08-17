@@ -2,6 +2,7 @@ import * as React from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface PasswordVisibilityProp
   extends React.InputHTMLAttributes<HTMLInputElement> {}
 
