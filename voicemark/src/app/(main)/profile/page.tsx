@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { AxiosError } from "axios";
 import { SquareUserRound } from "lucide-react";
 import API from "@/utils/axiosClient";
 import { toast } from "sonner";
@@ -33,7 +34,8 @@ export default function Page() {
       const res = await API.get(`/api/audio/download/${fileId}`, {
         withCredentials: true,
       });
-      const downloadUrl = res.data.downloadUrl;
+
+      const downloadUrl: string = res.data.downloadUrl;
       const link = document.createElement("a");
       link.href = downloadUrl;
       link.download = "";
@@ -42,18 +44,25 @@ export default function Page() {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-    } catch (error: any) {
-      console.error("Download failed:", error.response?.data || error.message);
-      toast.error(error.response?.data?.error || "Failed to download file.");
+    } catch (error: unknown) {
+      console.error("Download failed:", error);
+
+      let errorMessage = "Failed to download file.";
+      if (error instanceof AxiosError) {
+        errorMessage = error.response?.data?.error || errorMessage;
+      }
+
+      toast.error(errorMessage);
     }
   };
+
   const handleDelete = async (id: string) => {
     const toastId = toast.loading("Deleting file...");
     try {
       await deleteFile(id);
       setFiles((prev) => prev.filter((record) => record.id !== id));
       toast.success("File deleted successfully");
-    } catch (err) {
+    } catch {
       toast.error("Failed to delete file");
     } finally {
       toast.dismiss(toastId);
@@ -69,7 +78,7 @@ export default function Page() {
       setFiles((prev) => prev.filter((record) => !recordIds.has(record.id)));
 
       toast.success("Selected files deleted successfully");
-    } catch (err) {
+    } catch {
       toast.error("Failed to delete one or more files");
     } finally {
       toast.dismiss(toastId);

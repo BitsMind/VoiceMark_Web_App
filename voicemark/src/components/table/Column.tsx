@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import { Download, MoreHorizontal, Pause, Play } from "lucide-react";
+import { Download, MoreHorizontal } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,10 +12,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MyFormData } from "@/types/table";
 
-interface ColumnActions {
-  onEdit?: (data: MyFormData) => void;
-  onDelete?: (id: string) => void;
-}
+// interface ColumnActions {
+//   onEdit?: (data: MyFormData) => void;
+//   onDelete?: (id: string) => void;
+// }
 
 export const createColumns = (
   handleDownload: (id: string) => void

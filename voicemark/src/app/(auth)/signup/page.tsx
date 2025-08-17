@@ -42,7 +42,7 @@ export default function Page() {
     });
     toast.promise(onRegister, {
       loading: "Creating your account...",
-      success: async (res) => {
+      success: async () => {
         router.push("/login");
         return "Register successfully! Please login!";
       },
@@ -189,4 +189,3 @@ export default function Page() {
     </div>
   );
 }
-

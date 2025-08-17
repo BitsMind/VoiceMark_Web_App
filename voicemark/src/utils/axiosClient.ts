@@ -1,7 +1,8 @@
-import axios, { InternalAxiosRequestConfig } from "axios";
+import axios from "axios";
 
 const backendUrl = "http://localhost:5002";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const isServer = typeof window === "undefined";
 
 // Create an instance of axios

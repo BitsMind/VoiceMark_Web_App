@@ -20,6 +20,7 @@ interface UseDeleteDialogProps {
 
 export function useDeleteDialog({ onConfirmSingle, onConfirmMulti }: UseDeleteDialogProps) {
   const [open, setOpen] = React.useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [target, setTarget] = React.useState<{ type: "single" | "multi"; data: any } | null>(null);
 
   const showSingle = (id: string) => {

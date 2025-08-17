@@ -65,6 +65,7 @@ export function useFileUpload() {
         toast.success(`Watermarked ${f.name}!`, {
           duration: 8000,
         });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         const message = error?.response?.data?.error;
         toast.error(`Failed to upload ${f.name}`, {

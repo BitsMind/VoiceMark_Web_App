@@ -2,7 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 
-import React, { PropsWithChildren } from "react";
+import React from "react";
 import { Metadata } from "next";
 import SessionWrapper from "@/components/wrapper/SessionWrapper";
 
