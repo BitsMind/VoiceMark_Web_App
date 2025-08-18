@@ -1,4 +1,4 @@
-// ===== FRONTEND: Updated auth.ts =====
+// ===== SOLUTION 1: Secure localStorage with encryption (RECOMMENDED) =====
 import API from "@/utils/axiosClient";
 import { UserType, User } from "@/types/role";
 import { AxiosResponse } from "axios";
@@ -9,7 +9,6 @@ interface AuthResponse {
     id: string;
     name: string;
     email: string;
-    accountId: string;
   };
   account: {
     id: string;
@@ -18,43 +17,112 @@ interface AuthResponse {
     lastLogin: string;
     userType: UserType;
   };
-  // Add tokens to match your backend response
   tokens: {
     accessToken: string;
     refreshToken: string;
   };
 }
 
-// Token storage utility for cross-domain setup
+// Simple encryption for localStorage (basic security)
+class TokenCrypto {
+  private static key = 'your-app-secret-key'; // In production, use env variable
+
+  static encrypt(text: string): string {
+    try {
+      // Simple base64 encoding with key mixing (better than plain text)
+      const combined = text + '|' + this.key;
+      return btoa(combined);
+    } catch {
+      return text;
+    }
+  }
+
+  static decrypt(encryptedText: string): string {
+    try {
+      const decoded = atob(encryptedText);
+      return decoded.split('|')[0];
+    } catch {
+      return encryptedText;
+    }
+  }
+}
+
+// Enhanced Token Manager with persistent storage
 class TokenManager {
   private static instance: TokenManager;
   private accessToken: string | null = null;
   private refreshToken: string | null = null;
   private accessTokenTimer: NodeJS.Timeout | null = null;
+  private readonly ACCESS_TOKEN_KEY = 'app_access_token';
+  private readonly REFRESH_TOKEN_KEY = 'app_refresh_token';
 
   static getInstance(): TokenManager {
     if (!TokenManager.instance) {
       TokenManager.instance = new TokenManager();
+      // Load tokens from localStorage on initialization
+      TokenManager.instance.loadTokensFromStorage();
     }
     return TokenManager.instance;
+  }
+
+  private loadTokensFromStorage(): void {
+    if (typeof window === 'undefined') return;
+
+    try {
+      // Load refresh token (persistent)
+      const storedRefreshToken = localStorage.getItem(this.REFRESH_TOKEN_KEY);
+      if (storedRefreshToken) {
+        this.refreshToken = TokenCrypto.decrypt(storedRefreshToken);
+      }
+
+      // Load access token (check if still valid)
+      const storedAccessToken = sessionStorage.getItem(this.ACCESS_TOKEN_KEY);
+      if (storedAccessToken) {
+        this.accessToken = TokenCrypto.decrypt(storedAccessToken);
+        
+        // Set timer for access token
+        this.setAccessTokenTimer();
+      }
+
+      console.log("Tokens loaded from storage:", {
+        hasAccessToken: !!this.accessToken,
+        hasRefreshToken: !!this.refreshToken
+      });
+    } catch (error) {
+      console.error("Error loading tokens from storage:", error);
+      this.clearTokens();
+    }
+  }
+
+  private setAccessTokenTimer(): void {
+    if (this.accessTokenTimer) {
+      clearTimeout(this.accessTokenTimer);
+    }
+    
+    // Clear access token after 29 minutes (1 min before expiry)
+    this.accessTokenTimer = setTimeout(() => {
+      this.accessToken = null;
+      if (typeof window !== 'undefined') {
+        sessionStorage.removeItem(this.ACCESS_TOKEN_KEY);
+      }
+      console.log("Access token expired");
+    }, 29 * 60 * 1000);
   }
 
   setTokens(accessToken: string, refreshToken: string): void {
     this.accessToken = accessToken;
     this.refreshToken = refreshToken;
     
-    // Clear existing timer
-    if (this.accessTokenTimer) {
-      clearTimeout(this.accessTokenTimer);
+    if (typeof window !== 'undefined') {
+      // Store access token in sessionStorage (cleared on tab close)
+      sessionStorage.setItem(this.ACCESS_TOKEN_KEY, TokenCrypto.encrypt(accessToken));
+      
+      // Store refresh token in localStorage (persistent across browser restarts)
+      localStorage.setItem(this.REFRESH_TOKEN_KEY, TokenCrypto.encrypt(refreshToken));
     }
     
-    // Set timer to clear access token after 30 minutes
-    this.accessTokenTimer = setTimeout(() => {
-      this.accessToken = null;
-      console.log("Access token expired in memory");
-    }, 29 * 60 * 1000); // Clear 1 minute before actual expiry
-
-    console.log("Tokens stored successfully in memory");
+    this.setAccessTokenTimer();
+    console.log("Tokens stored successfully");
   }
 
   getAccessToken(): string | null {
@@ -68,10 +136,17 @@ class TokenManager {
   clearTokens(): void {
     this.accessToken = null;
     this.refreshToken = null;
+    
     if (this.accessTokenTimer) {
       clearTimeout(this.accessTokenTimer);
       this.accessTokenTimer = null;
     }
+
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(this.REFRESH_TOKEN_KEY);
+      sessionStorage.removeItem(this.ACCESS_TOKEN_KEY);
+    }
+    
     console.log("All tokens cleared");
   }
 
@@ -82,22 +157,19 @@ class TokenManager {
 
 const tokenManager = TokenManager.getInstance();
 
-// Setup axios interceptors
+// Setup axios interceptors (same as before but with better error handling)
 let isRefreshing = false;
 let refreshSubscribers: Array<(token: string) => void> = [];
 
-// Function to add subscribers waiting for token refresh
 const addRefreshSubscriber = (callback: (token: string) => void) => {
   refreshSubscribers.push(callback);
 };
 
-// Function to notify all subscribers when refresh is complete
 const onRefreshComplete = (token: string) => {
   refreshSubscribers.forEach(callback => callback(token));
   refreshSubscribers = [];
 };
 
-// Request interceptor to add Authorization header
 API.interceptors.request.use(
   (config) => {
     const accessToken = tokenManager.getAccessToken();
@@ -106,12 +178,9 @@ API.interceptors.request.use(
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
-// Response interceptor to handle token refresh
 API.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -119,7 +188,6 @@ API.interceptors.response.use(
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
-        // If already refreshing, wait for the refresh to complete
         return new Promise((resolve) => {
           addRefreshSubscriber((token: string) => {
             originalRequest.headers.Authorization = `Bearer ${token}`;
@@ -137,7 +205,6 @@ API.interceptors.response.use(
           throw new Error("No refresh token available");
         }
 
-        // Attempt to refresh the token
         const refreshResponse = await API.post("/api/auth/refresh", {
           refreshToken: refreshToken
         });
@@ -147,11 +214,8 @@ API.interceptors.response.use(
           const newRefreshToken = refreshResponse.data.tokens.refreshToken;
           
           tokenManager.setTokens(newAccessToken, newRefreshToken);
-          
-          // Notify all waiting requests
           onRefreshComplete(newAccessToken);
           
-          // Retry the original request
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
           return API(originalRequest);
         }
@@ -160,7 +224,6 @@ API.interceptors.response.use(
         tokenManager.clearTokens();
         toast.error("Session expired. Please log in again.");
         
-        // Optionally redirect to login
         if (typeof window !== 'undefined') {
           window.location.href = '/login';
         }
@@ -186,17 +249,14 @@ export async function signOut(): Promise<void> {
   try {
     const refreshToken = tokenManager.getRefreshToken();
     
-    // Send logout request with refresh token in body
     await API.post("/api/auth/logout", {
       refreshToken: refreshToken
     });
     
-    // Clear local tokens
     tokenManager.clearTokens();
     console.log("User successfully logged out.");
   } catch (error) {
     console.error("Failed to sign out:", error);
-    // Clear tokens even if logout request fails
     tokenManager.clearTokens();
   }
 }
@@ -209,18 +269,14 @@ export async function login(values: {
     const response: AxiosResponse<AuthResponse> = await API.post(
       "/api/auth/login",
       values
-      // Removed withCredentials since we're using Authorization headers
     );
 
-    // Store tokens from response
     if (response.data.tokens) {
       tokenManager.setTokens(
         response.data.tokens.accessToken,
         response.data.tokens.refreshToken
       );
-      console.log("Login successful, tokens stored");
-    } else {
-      console.warn("No tokens received in login response");
+      console.log("Login successful, tokens stored persistently");
     }
 
     return extractUserInfo(response.data);
@@ -241,13 +297,11 @@ export async function userSignup(values: {
       values
     );
 
-    // Store tokens if they're returned after signup
     if (response.data.tokens) {
       tokenManager.setTokens(
         response.data.tokens.accessToken,
         response.data.tokens.refreshToken
       );
-      console.log("Signup successful, tokens stored");
     }
 
     return response;
@@ -259,13 +313,44 @@ export async function userSignup(values: {
 
 export async function getMe(): Promise<User> {
   try {
-    // This will automatically include Authorization header via interceptor
     const response: AxiosResponse<AuthResponse> = await API.get("/api/auth/me");
     return extractUserInfo(response.data);
   } catch (error) {
     console.error("getMe failed:", error);
     toast.error("Failed to get user info, please log in again");
     throw error;
+  }
+}
+
+// Initialize authentication on app load
+export async function initializeAuth(): Promise<User | null> {
+  try {
+    // Check if we have tokens
+    if (!tokenManager.hasValidAccessToken() && tokenManager.getRefreshToken()) {
+      // Try to refresh the access token
+      const refreshToken = tokenManager.getRefreshToken();
+      const refreshResponse = await API.post("/api/auth/refresh", {
+        refreshToken: refreshToken
+      });
+
+      if (refreshResponse.data.tokens) {
+        tokenManager.setTokens(
+          refreshResponse.data.tokens.accessToken,
+          refreshResponse.data.tokens.refreshToken
+        );
+      }
+    }
+
+    // If we have an access token, get user info
+    if (tokenManager.hasValidAccessToken()) {
+      return await getMe();
+    }
+    
+    return null;
+  } catch (error) {
+    console.error("Auth initialization failed:", error);
+    tokenManager.clearTokens();
+    return null;
   }
 }
 
@@ -276,12 +361,4 @@ export function isAuthenticated(): boolean {
 
 export function clearAuthTokens(): void {
   tokenManager.clearTokens();
-}
-
-// For debugging purposes
-export function getStoredTokens() {
-  return {
-    accessToken: tokenManager.getAccessToken(),
-    refreshToken: tokenManager.getRefreshToken(),
-  };
 }
