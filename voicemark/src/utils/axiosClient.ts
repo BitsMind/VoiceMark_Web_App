@@ -8,9 +8,13 @@ const isServer = typeof window === "undefined";
 // Create an instance of axios
 const API = axios.create({
   baseURL: backendUrl,
-  withCredentials: true
-});
-
+  withCredentials: true,
+  timeout: 30000, // 30 second timeout
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  }
+})
 // class ClientSessionToken {
 //   private token: string = "";
 //   set value(token: string) {
