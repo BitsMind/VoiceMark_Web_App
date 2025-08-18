@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const backendUrl = "http://localhost:5002";
+const backendUrl = "https://voicemark-web-app.onrender.com";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const isServer = typeof window === "undefined";
