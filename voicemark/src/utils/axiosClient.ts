@@ -9,7 +9,7 @@ const isServer = typeof window === "undefined";
 const API = axios.create({
   baseURL: backendUrl,
   withCredentials: true,
-  timeout: 30000, // 30 second timeout
+  timeout: 120000, // 120 second timeout
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
