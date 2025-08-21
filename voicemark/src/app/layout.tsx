@@ -36,7 +36,7 @@ export default function RootLayout({
           <main className="w-full">{children}</main>
         </SessionWrapper>
         <Toaster position="top-center" />
-        <div className="sm:hidden fixed inset-0 z-50 bg-black text-white flex items-center justify-center text-center p-6">
+        <div className="sm:hidden fixed inset-0 z-100 bg-black text-white flex items-center justify-center text-center p-6">
           <p className="text-lg font-semibold">
             This application is best experienced on a laptop or desktop device.
             <br />

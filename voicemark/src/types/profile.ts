@@ -8,4 +8,5 @@ export interface UserProfile {
   avatar: string;
   usedStorage: number;
   audioFiles: FileDetails[]
+  totalDetectionCount: number
 }

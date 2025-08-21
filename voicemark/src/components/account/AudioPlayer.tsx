@@ -31,7 +31,6 @@ export function MiniAudioPlayer({ track }: { track: AudioTrack | null }) {
     audio.addEventListener("timeupdate", onTimeUpdate);
     audio.addEventListener("ended", onEnded);
 
-    // Handle play promise properly
     if (isPlaying) {
       audio.play().catch((error) => {
         console.error("Failed to play audio:", error);
@@ -45,7 +44,7 @@ export function MiniAudioPlayer({ track }: { track: AudioTrack | null }) {
       audio.removeEventListener("timeupdate", onTimeUpdate);
       audio.removeEventListener("ended", onEnded);
     };
-  }, [track, isPlaying]); // Added isPlaying to dependencies
+  }, [track, isPlaying]); 
 
   useEffect(() => {
     if (audioRef.current) {

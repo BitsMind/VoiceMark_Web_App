@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Loader2 } from "lucide-react";
 import DetectionSummary from "./DetectionSummary";
+import { HelpTooltip } from "../help-card/HelpToolTip";
 
 export function DetectWatermarkDropzone() {
   const { file, uploading, result, onDrop, removeFile, detect } =
@@ -32,7 +33,8 @@ export function DetectWatermarkDropzone() {
   });
 
   return (
-    <div className="border rounded-lg p-6 w-full h-full space-y-4 bg-background my-5 pb-8">
+    <div className="relative border rounded-lg p-6 w-full h-full space-y-4 bg-background my-5 pb-8">
+      <HelpTooltip text="Detect watermark in audio files here. You can detect 1 file each time. The result will be display, along with the Confidence score from 0 to 1 (0 is most likely no watermark detected, 1 is most likely a watermark detected). Keep in mind, the info display is different based on whether you are the owner of the file or not" />
       <div>
         <h2 className="text-lg font-medium mb-1">Detect Watermark in Audio</h2>
         <p className="text-sm text-muted-foreground">
@@ -92,7 +94,6 @@ export function DetectWatermarkDropzone() {
           )}
         </div>
 
-        {/* Separator */}
         <Separator
           orientation="vertical"
           className="hidden md:block h-auto bg-white"

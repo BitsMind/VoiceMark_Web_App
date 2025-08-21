@@ -5,8 +5,6 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
@@ -21,33 +19,21 @@ export function LandingNavMenu() {
       <div className="ml-auto mr-4">
         <NavigationMenu viewport={false}>
           <NavigationMenuList>
-            {/* Link to documentation */}
             <NavigationMenuItem>
               <NavigationMenuLink
                 asChild
                 className={`${navigationMenuTriggerStyle()} bg-transparent`}
               >
-                <Link href="/docs">Docs</Link>
+                <Link href="">Read our research</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
 
-            {/* Link to About */}
             <NavigationMenuItem>
               <NavigationMenuLink
                 asChild
                 className={`${navigationMenuTriggerStyle()} bg-transparent`}
               >
-                <Link href="/docs">About</Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-
-            {/* Link to Help */}
-            <NavigationMenuItem>
-              <NavigationMenuLink
-                asChild
-                className={`${navigationMenuTriggerStyle()} bg-transparent`}
-              >
-                <Link href="/docs">Help</Link>
+                <Link href="/help">Help</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenuList>

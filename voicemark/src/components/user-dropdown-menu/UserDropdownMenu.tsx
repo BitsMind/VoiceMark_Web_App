@@ -1,13 +1,10 @@
 "use client";
 import * as React from "react";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
@@ -45,14 +42,22 @@ export function UserDropdown() {
               <User /> Account
               <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Settings/> Settings
+            <DropdownMenuItem disabled>
+              <Settings /> Settings
               <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>GitHub</DropdownMenuItem>
-          <DropdownMenuItem>Support</DropdownMenuItem>
+          <DropdownMenuItem>
+            <a
+              href="https://github.com/BitsMind"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub
+            </a>
+          </DropdownMenuItem>
+          <DropdownMenuItem disabled>Support</DropdownMenuItem>
           <DropdownMenuItem disabled>API</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={show}>

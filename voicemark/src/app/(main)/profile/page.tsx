@@ -129,16 +129,19 @@ export default function Page() {
         <div className="lg:col-span-3 grid gap-6 grid-cols-[repeat(auto-fit,_minmax(220px,_1fr))] justify-center">
           <UserStatsCard
             label="Total Uploads"
+            helpText="This shows your total number of files uploaded."
             count={profile.totalAudioFiles}
             bars={[40, 100, 130, 75, 90]}
           />
           <UserStatsCard
             label="Watermarks Detected by Others"
-            count={2}
+            helpText="This shows the total number your files has been detected by other users"
+            count={profile.totalDetectionCount}
             bars={[40, 100, 130, 75, 90]}
           />
           <UserStatsCard
             label="/ 500 MB of Available Storage"
+            helpText="This shows your current storage space"
             count={handleCalculateStorage()}
             bars={[40, 100, 130, 75, 90]}
           />

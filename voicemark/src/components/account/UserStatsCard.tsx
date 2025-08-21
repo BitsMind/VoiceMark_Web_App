@@ -1,14 +1,15 @@
 import { Card } from "@/components/ui/card";
-import { HelpCircle } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { HelpTooltip } from "../help-card/HelpToolTip";
 
 interface Props {
   label: string;
+  helpText: string;
   count: number;
   bars?: number[];
 }
 
-export function UserStatsCard({ label, count, bars = [100, 120, 150, 80, 60] }: Props) {
+export function UserStatsCard({ label, count, helpText, bars = [100, 120, 150, 80, 60] }: Props) {
   const [animatedBars, setAnimatedBars] = useState<number[]>(bars.map(() => 0));
 
   useEffect(() => {
@@ -24,7 +25,7 @@ export function UserStatsCard({ label, count, bars = [100, 120, 150, 80, 60] }: 
 
   return (
     <Card className="relative rounded-2xl p-4 shadow-sm h-40 w-full overflow-hidden grid grid-cols-3 gap-4">
-      <HelpCircle className="absolute top-3 right-3 h-4 w-4 text-muted-foreground" />
+      <HelpTooltip text={helpText}/>
 
       <div className="col-span-2 flex flex-col justify-center">
         <h3 className="text-3xl font-semibold text-muted-foreground">{count}</h3>

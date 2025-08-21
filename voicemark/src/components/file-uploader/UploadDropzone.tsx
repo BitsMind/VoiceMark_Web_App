@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import { Loader2, UploadCloud } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
+import { HelpTooltip } from "../help-card/HelpToolTip";
 
 export function FileUploadDropzone({
   onUploadComplete,
@@ -38,7 +39,8 @@ export function FileUploadDropzone({
   };
 
   return (
-    <div className="border rounded-lg p-6 w-full h-full space-y-2.5 bg-background">
+    <div className="relative border rounded-lg p-6 w-full h-full space-y-2.5 bg-background">
+      <HelpTooltip text="Use this to watermark and upload your files to VoiceMark. You can upload multiple files at once." />
       <div>
         <h2 className="text-lg font-medium mb-1">
           Upload Audio(s) to Watermark

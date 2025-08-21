@@ -14,20 +14,20 @@ export default async function Layout({
   return (
     <div className="flex h-full w-full">
       {/* <SidebarProvider defaultOpen={defaultOpen}> */}
-        {/* <AppSidebar /> */}
-        <main className="w-full">
-          <div className="flex flex-row items-center">
-            <NavMenu />
-            <UserDropdown />
-          </div>
+      {/* <AppSidebar /> */}
+      <main className="w-full">
+        <div className="flex flex-row items-center">
+          <NavMenu />
+          <UserDropdown />
+        </div>
 
-          <div className="flex items-center pl-4">
-            {/* <SidebarTrigger /> */}
-            <DynamicBreadcrumb />
-          </div>
+        <div className="flex items-center pl-4">
+          {/* <SidebarTrigger /> */}
+          <DynamicBreadcrumb />
+        </div>
 
-          {children}
-        </main>
+        {children}
+      </main>
       {/* </SidebarProvider> */}
     </div>
   );

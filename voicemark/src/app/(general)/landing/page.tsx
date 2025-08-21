@@ -1,7 +1,7 @@
 import Features from "@/components/landing-page/Features";
 import Footer from "@/components/landing-page/Footer";
 import Hero from "@/components/landing-page/Hero";
-import Testimonials from "@/components/landing-page/HowItWorks";
+import HowItWorks from "@/components/landing-page/HowItWorks";
 import { LandingNavMenu } from "@/components/navigation-menu/LandingNavigationMenu";
 
 
@@ -17,7 +17,7 @@ return (
           <Features />
         </section>
         <section className="h-auto">
-          <Testimonials />
+          <HowItWorks />
         </section>
         <section className="h-auto">
           <Footer />

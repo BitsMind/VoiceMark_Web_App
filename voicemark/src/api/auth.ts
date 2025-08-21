@@ -1,4 +1,3 @@
-// ===== SOLUTION 1: Secure localStorage with encryption (RECOMMENDED) =====
 import API from "@/utils/axiosClient";
 import { UserType, User } from "@/types/role";
 import { AxiosResponse } from "axios";
@@ -29,7 +28,6 @@ class TokenCrypto {
 
   static encrypt(text: string): string {
     try {
-      // Simple base64 encoding with key mixing (better than plain text)
       const combined = text + '|' + this.key;
       return btoa(combined);
     } catch {
@@ -47,7 +45,6 @@ class TokenCrypto {
   }
 }
 
-// Enhanced Token Manager with persistent storage
 class TokenManager {
   private static instance: TokenManager;
   private accessToken: string | null = null;
@@ -157,7 +154,6 @@ class TokenManager {
 
 const tokenManager = TokenManager.getInstance();
 
-// Setup axios interceptors (same as before but with better error handling)
 let isRefreshing = false;
 let refreshSubscribers: Array<(token: string) => void> = [];
 
@@ -354,7 +350,6 @@ export async function initializeAuth(): Promise<User | null> {
   }
 }
 
-// Utility functions
 export function isAuthenticated(): boolean {
   return tokenManager.hasValidAccessToken();
 }

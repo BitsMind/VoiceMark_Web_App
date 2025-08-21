@@ -18,7 +18,7 @@ const steps = [
     icon: CheckCheck,
     title: "Verification & Authentication",
     description:
-      "Our detector can instantly detect and verify the watermark, confirming authenticity and origin. This allows anyone to validate audio with confidence and protect against deepfakes.",
+      "Our detector can instantly detect and verify the watermark, confirming authenticity and origin. This allows anyone to validate audio with confidence.",
   },
 ];
 
@@ -26,7 +26,9 @@ export default function HowItWorksSection() {
   return (
     <section className="py-20">
       <div className="max-w-6xl mx-auto px-4 text-center">
-        <h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mb-12">How it works</h2>
+        <h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mb-12">
+          How it works
+        </h2>
 
         <div className="grid gap-6 md:grid-cols-3">
           {steps.map((step, index) => (

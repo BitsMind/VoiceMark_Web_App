@@ -11,7 +11,7 @@ export default function Hero() {
 
       <div className="relative z-10 text-center px-4 ">
         <div className="flex justify-center">
-          <Logo/>
+          <Logo />
         </div>
         <h1 className="text-5xl md:text-6xl font-extrabold text-white mb-6 leading-tight md:leading-tight drop-shadow-md">
           Audio-watermarking made simple

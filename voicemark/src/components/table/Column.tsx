@@ -41,8 +41,8 @@ export const createColumns = (
       },
     },
     {
-      accessorKey: "format",
-      header: "Format",
+      accessorKey: "watermarkDetectionCount",
+      header: "Detection Count",
     },
     {
       accessorKey: "fileSize",
@@ -98,7 +98,10 @@ export const createColumns = (
               </DropdownMenuItem>
             )}
             {onDelete && (
-              <DropdownMenuItem className="text-red-700" onClick={() => onDelete(record.id)}>
+              <DropdownMenuItem
+                className="text-red-700"
+                onClick={() => onDelete(record.id)}
+              >
                 Delete
               </DropdownMenuItem>
             )}

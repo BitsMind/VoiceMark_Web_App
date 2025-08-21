@@ -10,7 +10,7 @@ export default function Page() {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const handleUploadComplete = () => {
-    setRefreshTrigger((prev) => prev + 1); // trigger file list reload
+    setRefreshTrigger((prev) => prev + 1); 
   };
 
   return (

@@ -73,11 +73,12 @@ export function ToastButton2() {
       className="mt-4 px-4 py-2 rounded-md bg-black text-white hover:bg-gray-800"
       onClick={() =>
         toast({
-          title: 'Custom Alert!',
-          description: 'This toast is fully styled with custom fonts and colors.',
+          title: "Custom Alert!",
+          description:
+            "This toast is fully styled with custom fonts and colors.",
           button: {
-            label: 'Okay',
-            onClick: () => console.log('Okay clicked'),
+            label: "Okay",
+            onClick: () => console.log("Okay clicked"),
           },
         })
       }

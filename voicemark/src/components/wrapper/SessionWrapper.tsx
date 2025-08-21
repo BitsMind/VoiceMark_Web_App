@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useUserStore } from "@/stores/user-store";
 import { getMe } from "@/api/auth";
 
-const SKIPPED_ROUTES = ["/landing", "/login", "/signup"];
+const SKIPPED_ROUTES = ["/landing", "/login", "/signup", "/help"];
 
 export default function SessionWrapper({
   children,

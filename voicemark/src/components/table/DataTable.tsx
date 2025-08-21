@@ -26,10 +26,10 @@ import {
   ArrowDownUp,
   ArrowDownWideNarrow,
   ArrowUpNarrowWide,
-  HelpCircle,
 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { AudioTrack } from "../account/AudioPlayer";
+import { HelpTooltip } from "../help-card/HelpToolTip";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -83,7 +83,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="relative flex flex-col space-y-4 bg-black mb-5 rounded-lg border h-[670px]">
-      <HelpCircle className="absolute top-3 right-3 h-4 w-4 text-muted-foreground" />
+      <HelpTooltip text="View info and manage your files. Click '...' for delete option" />
       <div className="flex items-center justify-between">
         <div className="mt-2 ml-2">
           <Input

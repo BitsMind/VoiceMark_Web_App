@@ -14,7 +14,8 @@ export async function fetchUserProfile(): Promise<UserProfile> {
     audioFiles,
     memberSince: userStats.memberSince,
     avatar: userStats.avatar,
-    usedStorage: userStats.usedStorage
+    usedStorage: userStats.usedStorage,
+    totalDetectionCount: userStats.totalDetectionCount
   };
 }
 

@@ -90,7 +90,7 @@ export default function Page() {
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              {/* Name */}
+    
               <FormField
                 name="name"
                 control={form.control}
@@ -107,7 +107,6 @@ export default function Page() {
                 )}
               />
 
-              {/* Email */}
               <FormField
                 name="email"
                 control={form.control}
@@ -124,7 +123,6 @@ export default function Page() {
                 )}
               />
 
-              {/* Password */}
               <FormField
                 name="password"
                 control={form.control}
@@ -141,7 +139,6 @@ export default function Page() {
                 )}
               />
 
-              {/* Confirm password */}
               <FormField
                 name="confirmPassword"
                 control={form.control}
